@@ -1,20 +1,15 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'; // Import Route
-import './App.css';
-import { Landing } from './screens/Landing';
-import { Game } from './screens/Game';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Game } from "./screens/Game";
+import { Landing } from "./screens/Landing";
+import "./App.css";
 
-function App() {
+export default function App() {
   return (
-    
-   <div className='h-screen bg-slate-900'>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="game" element={<Game />} />
+        <Route path="/game" element={<Game />} />
       </Routes>
     </BrowserRouter>
-    </div>
   );
 }
-
-export default App;

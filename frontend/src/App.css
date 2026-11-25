@@ -1,0 +1,355 @@
+.landing,
+.game-page {
+  min-height: 100vh;
+  background: #121916;
+}
+.game-header {
+  height: 86px;
+  border-bottom: 1px solid #405047;
+  max-width: 1450px;
+  margin: auto;
+  padding: 0 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  font-family: "Space Grotesk";
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  color: #afbdad;
+}
+.game-header a:hover {
+  color: #d4ef7a;
+}
+.brand {
+  font-size: 31px !important;
+  letter-spacing: -0.07em !important;
+  color: #f4f6ea !important;
+}
+.brand span {
+  color: #d4ef7a;
+}
+.eyebrow {
+  font: 700 12px "Space Grotesk";
+  letter-spacing: 0.16em;
+  color: #d4ef7a;
+}
+.landing-content {
+  max-width: 1450px;
+  margin: auto;
+  min-height: calc(100vh - 86px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 7%;
+  padding: 70px 5%;
+}
+.landing h1,
+.game-panel h1 {
+  font-family: "Space Grotesk";
+  font-weight: 600;
+  letter-spacing: -0.075em;
+  line-height: 0.99;
+}
+.landing h1 {
+  font-size: clamp(65px, 8vw, 130px);
+  margin: 28px 0;
+}
+.landing h1 em {
+  font-style: normal;
+  color: #d4ef7a;
+}
+.landing-content p {
+  max-width: 470px;
+  font-size: 18px;
+  line-height: 1.65;
+  color: #b8c4b4;
+  margin-bottom: 32px;
+}
+.play-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 75px;
+  background: #d4ef7a;
+  border: 0;
+  color: #18231a;
+  padding: 17px 22px;
+  width: max-content;
+  min-width: 200px;
+  font-weight: 700;
+  font-size: 14px;
+  transition:
+    transform 0.2s,
+    background 0.2s;
+}
+.play-button:hover:not(:disabled) {
+  transform: translateY(-3px);
+  background: #e7ff9b;
+}
+.play-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.landing-note {
+  margin-top: 70px;
+  font: 700 11px "Space Grotesk";
+  letter-spacing: 0.13em;
+  color: #789080;
+}
+.landing-art {
+  min-height: 600px;
+  background: #243a2d;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-image:
+    linear-gradient(#ffffff0b 1px, transparent 1px),
+    linear-gradient(90deg, #ffffff0b 1px, transparent 1px);
+  background-size: 47px 47px;
+}
+.landing-art:before,
+.landing-art:after {
+  content: "";
+  position: absolute;
+  border: 1px solid #9cc45688;
+  border-radius: 50%;
+  height: 420px;
+  width: 420px;
+}
+.landing-art:after {
+  height: 580px;
+  width: 580px;
+}
+.art-piece {
+  font:
+    400 clamp(250px, 29vw, 460px) Georgia,
+    serif;
+  line-height: 1;
+  color: #d4ef7a;
+  z-index: 1;
+  text-shadow: 35px 35px 0 #617641;
+  transform: rotate(-10deg);
+}
+.art-label {
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+  font: 700 11px "Space Grotesk";
+  letter-spacing: 0.15em;
+  color: #bed5b6;
+}
+.game-layout {
+  max-width: 1450px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 720px) minmax(280px, 1fr);
+  gap: 6%;
+  padding: 55px 5% 70px;
+}
+.board-wrap {
+  min-width: 0;
+}
+.board-top,
+.board-bottom {
+  display: flex;
+  justify-content: space-between;
+  color: #9fb1a1;
+  font: 700 11px "Space Grotesk";
+  letter-spacing: 0.12em;
+  padding: 0 0 15px;
+}
+.board-bottom {
+  padding: 15px 0;
+}
+.board {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  aspect-ratio: 1;
+  border: 9px solid #263c2e;
+  box-shadow: 0 25px 55px #0007;
+}
+.square {
+  position: relative;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font:
+    clamp(25px, 4vw, 60px) Georgia,
+    serif;
+  line-height: 1;
+  padding: 0;
+}
+.square.light {
+  background: #e9ecd8;
+}
+.square.dark {
+  background: #739279;
+}
+.square.selected {
+  background: #d4ef7a;
+}
+.square.legal i {
+  position: absolute;
+  width: 22%;
+  height: 22%;
+  border-radius: 50%;
+  background: #354b3888;
+}
+.square span {
+  z-index: 1;
+}
+.white-piece {
+  color: #fffefa;
+  text-shadow:
+    0 3px 2px #263528,
+    2px 0 2px #263528;
+}
+.black-piece {
+  color: #1f2b22;
+  text-shadow: 0 1px 1px #d9e0d0;
+}
+.square small {
+  position: absolute;
+  font: 700 9px "Space Grotesk";
+  color: #31553a;
+}
+.rank-label {
+  left: 4px;
+  top: 3px;
+}
+.file-label {
+  right: 4px;
+  bottom: 2px;
+}
+.game-panel {
+  padding-top: 35px;
+}
+.game-panel h1 {
+  font-size: clamp(48px, 5vw, 82px);
+  margin: 22px 0 20px;
+}
+.game-panel > p {
+  font-size: 16px;
+  line-height: 1.65;
+  color: #b8c4b4;
+  max-width: 420px;
+}
+.status-card {
+  border-top: 1px solid #405047;
+  border-bottom: 1px solid #405047;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  margin: 32px 0;
+  font: 700 11px "Space Grotesk";
+  letter-spacing: 0.12em;
+  color: #91a493;
+  text-transform: uppercase;
+}
+.status-card strong {
+  color: #d4ef7a;
+  font-size: 14px;
+}
+.waiting {
+  font-size: 13px;
+  color: #d4ef7a;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.pulse {
+  width: 9px;
+  height: 9px;
+  background: #d4ef7a;
+  border-radius: 50%;
+  box-shadow: 0 0 0 5px #d4ef7a33;
+}
+.moves {
+  border-top: 1px solid #405047;
+  margin-top: 55px;
+  padding-top: 17px;
+  min-height: 140px;
+}
+.moves > div {
+  display: flex;
+  justify-content: space-between;
+  font: 700 11px "Space Grotesk";
+  letter-spacing: 0.12em;
+  color: #91a493;
+}
+.moves p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #d5decf;
+}
+.game-tip {
+  font-size: 12px !important;
+  color: #788d7c !important;
+  margin-top: 30px;
+}
+.game-header a:focus-visible,
+.play-button:focus-visible,
+.square:focus-visible {
+  outline: 3px solid #d4ef7a;
+  outline-offset: 2px;
+}
+@media (max-width: 850px) {
+  .landing-content,
+  .game-layout {
+    grid-template-columns: 1fr;
+  }
+  .landing-art {
+    min-height: 450px;
+  }
+  .game-layout {
+    gap: 20px;
+  }
+  .game-panel {
+    padding-top: 0;
+  }
+}
+@media (max-width: 500px) {
+  .game-header {
+    height: 70px;
+  }
+  .game-header > span {
+    display: none;
+  }
+  .landing-content {
+    padding: 55px 5%;
+  }
+  .landing h1 {
+    font-size: 65px;
+  }
+  .landing-art {
+    min-height: 320px;
+  }
+  .art-piece {
+    font-size: 240px;
+  }
+  .game-layout {
+    padding: 25px 4%;
+  }
+  .board {
+    border-width: 5px;
+  }
+  .square {
+    font-size: 34px;
+  }
+  .game-panel h1 {
+    font-size: 52px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *:before,
+  *:after {
+    transition: none !important;
+  }
+}

@@ -1,61 +1,72 @@
-import React, { useState } from 'react';
-import { Chess } from 'chess.js';
-import { MOVE } from '../screens/Game';
+import { useState } from "react";
 
-const ChessBoard = ({chess, setBoard, socket, board }) => {
-  const [from, setFrom] = useState(null);
-  const [to, setTo] = useState(null);
-
-  return (
-    <div className="text-white-200">
-      {board.map((row, i) => {
-        return (
-          <div key={i} className="flex">
-            {row.map((square, j) => {
-              const squarePosition = String.fromCharCode(97 + (j % 8)) + "" + (8 - i); // Corrected here
-
-              return (
-                <div
-                  onClick={() => {
-                    if (!from) {
-                      setFrom(squarePosition);
-                    } else {
-                      socket.send(
-                        JSON.stringify({
-                          
-                          type: MOVE,
-                          payload: {
-                            move:{
-                              from,
-                              to: squarePosition,
-                            }
-                          },
-                        })
-                      );
-                      setFrom(null);
-                      chess.move({
-                        from,
-                        to: squarePosition,
-                      })
-                      setBoard(chess.board());
-                    }
-                  }}
-                  key={j}
-                  className={`w-16 h-16 ${(i + j) % 2 === 0 ? 'bg-green-500' : 'bg-green-300'}`}
-                >
-                  <div className="w-full justify-center flex h-full">
-                    <div className="h-full justify-center flex flex-col">
-                      {square ? square.type : '.'}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        );
-      })}
-    </div>
-  );
+const pieces = {
+  wk: "♔",
+  wq: "♕",
+  wr: "♖",
+  wb: "♗",
+  wn: "♘",
+  wp: "♙",
+  bk: "♚",
+  bq: "♛",
+  br: "♜",
+  bb: "♝",
+  bn: "♞",
+  bp: "♟",
 };
 
-export default ChessBoard;
+export default function ChessBoard({ chess, color, canMove, onMove }) {
+  const [selected, setSelected] = useState(null);
+  const files = color === "black" ? "hgfedcba" : "abcdefgh";
+  const ranks = color === "black" ? "12345678" : "87654321";
+  const legal = selected
+    ? chess.moves({ square: selected, verbose: true }).map((m) => m.to)
+    : [];
+
+  function choose(square) {
+    if (!canMove) return;
+    const piece = chess.get(square);
+    if (selected && legal.includes(square)) {
+      onMove({ from: selected, to: square, promotion: "q" });
+      setSelected(null);
+    } else if (piece?.color === (color === "white" ? "w" : "b")) {
+      setSelected(square);
+    } else {
+      setSelected(null);
+    }
+  }
+
+  return (
+    <div className="board" role="grid" aria-label="Chess board">
+      {Array.from(ranks).flatMap((rank, row) =>
+        Array.from(files).map((file, col) => {
+          const square = file + rank;
+          const piece = chess.get(square);
+          return (
+            <button
+              type="button"
+              role="gridcell"
+              aria-label={`${square}${piece ? ` ${piece.color === "w" ? "white" : "black"} ${piece.type}` : ""}`}
+              key={square}
+              onClick={() => choose(square)}
+              className={`square ${(row + col) % 2 ? "dark" : "light"} ${selected === square ? "selected" : ""} ${legal.includes(square) ? "legal" : ""}`}
+            >
+              {piece && (
+                <span
+                  className={
+                    piece.color === "w" ? "white-piece" : "black-piece"
+                  }
+                >
+                  {pieces[piece.color + piece.type]}
+                </span>
+              )}
+              {legal.includes(square) && <i aria-hidden="true" />}
+              {col === 0 && <small className="rank-label">{rank}</small>}
+              {row === 7 && <small className="file-label">{file}</small>}
+            </button>
+          );
+        }),
+      )}
+    </div>
+  );
+}

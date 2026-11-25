@@ -1,54 +1,58 @@
 import { Game } from "./Game.js";
-import { INIT_GAME, MOVE } from "./messages.js";
+import { ERROR, INIT_GAME, MOVE, WAITING, send } from "./messages.js";
 
 export class GameManager {
-  #games;
-  #pendingUser;
-  #users;
-
   constructor() {
-    this.#games = [];
-    this.#pendingUser = null;
-    this.#users = [];
+    this.pending = null;
+    this.games = new Map();
   }
 
   addUser(socket) {
-    this.#users.push(socket);
-    this.#addHandler(socket);
-  }
-
-  removeUser(socket) {
-    this.#users = this.#users.filter((user) => user !== socket);
-    //Stop the game here
-  }
-
-  #addHandler(socket) {
     socket.on("message", (data) => {
-      const message = JSON.parse(data.toString());
-
-      if (message.type === INIT_GAME) {
-        if (this.#pendingUser) {
-          //START GAME
-          const game = new Game(this.#pendingUser, socket);
-          this.#games.push(game);
-          this.#pendingUser = null;
-          // this.#startGame(socket,this.#pendingUser);
-          // this.#pendingUser=null;
-        } else {
-          this.#pendingUser = socket;
-        }
+      let message;
+      try {
+        message = JSON.parse(data.toString());
+      } catch {
+        return send(socket, ERROR, { message: "Invalid message." });
       }
-
-      if (message.type ===MOVE) {
-        console.log("inside move");
-        const game = this.#games.find(
-          (game) => game.player1 === socket || game.player2 === socket
-        );
-        if (game) {
-            console.log("inside make move");
-          game.makeMove(socket, message.payload.move);
+      if (!message || typeof message !== "object")
+        return send(socket, ERROR, { message: "Invalid message." });
+      if (message.type === INIT_GAME) this.join(socket);
+      else if (message.type === MOVE) {
+        const game = this.games.get(socket);
+        game?.makeMove(socket, message.payload?.move);
+        if (game?.finished) {
+          this.games.delete(game.white);
+          this.games.delete(game.black);
         }
       }
     });
+    socket.on("close", () => this.removeUser(socket));
+    socket.on("error", () => this.removeUser(socket));
+  }
+
+  join(socket) {
+    if (this.games.has(socket))
+      return send(socket, ERROR, { message: "You are already in a game." });
+    if (this.pending === socket)
+      return send(socket, WAITING, { message: "Waiting for an opponent..." });
+    if (this.pending?.readyState === 1) {
+      const game = new Game(this.pending, socket);
+      this.games.set(this.pending, game);
+      this.games.set(socket, game);
+      this.pending = null;
+    } else {
+      this.pending = socket;
+      send(socket, WAITING, { message: "Waiting for an opponent..." });
+    }
+  }
+
+  removeUser(socket) {
+    if (this.pending === socket) this.pending = null;
+    const game = this.games.get(socket);
+    if (!game) return;
+    game.leave(socket);
+    this.games.delete(game.white);
+    this.games.delete(game.black);
   }
 }

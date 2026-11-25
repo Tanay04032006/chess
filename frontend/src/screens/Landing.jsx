@@ -1,30 +1,47 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Button from '../components/Button';
+import { Link } from "react-router-dom";
 
-export const Landing = () => {
-  const navigate=useNavigate();
+export function Landing() {
   return (
-    <div className='flex justify-center'>
-    <div className="pt-8 max-w-screen-lg">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {/* Image Section */}
-        <div className="flex justify-center">
-        <img src="/ChessBoard.jpeg" alt="Chess Board" className='max-w-96' />
+    <main className="landing">
+      <header className="game-header">
+        <a href="/" className="brand">
+          knight<span>.</span>
+        </a>
+        <span>ONLINE CHESS / BY TANAY GUPTA</span>
+        <a
+          href="https://github.com/Tanay04032006/chess"
+          target="_blank"
+          rel="noreferrer"
+        >
+          SOURCE ↗
+        </a>
+      </header>
+      <div className="landing-content">
+        <div>
+          <span className="eyebrow">A LITTLE STRATEGY, A LOT OF FUN</span>
+          <h1>
+            One board.
+            <br />
+            <em>Two minds.</em>
+            <br />
+            Your move.
+          </h1>
+          <p>
+            Jump into a live match against another player. No account, no
+            clutter—just chess.
+          </p>
+          <Link className="play-button" to="/game">
+            Play online <span>↗</span>
+          </Link>
+          <div className="landing-note">
+            BUILT WITH REACT · CHESS.JS · WEBSOCKETS
+          </div>
         </div>
-        {/* Text Section */}
-        <div className='pt-16'>
-          <div className='flex justify-center'>
-          <h1 className="text-4xl font-bold text-white">Play Chess Online</h1>
-          
-          </div>
-          
-          <div className="mt-4 flex justify-center">
-            <Button onClick={()=>navigate('/game')}>Play Online</Button>
-          </div>
+        <div className="landing-art">
+          <div className="art-piece">♞</div>
+          <span className="art-label">THE GAME IS ON</span>
         </div>
       </div>
-    </div>
-    </div>
+    </main>
   );
-};
+}
